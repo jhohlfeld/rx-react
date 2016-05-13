@@ -2,68 +2,42 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Cycle from '@cycle/core'
 
-class Test extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
-    componentWillMount() {
-        console.log(`$(this.displayname) will mount!`)
-    }
-
-    render() {
-        const { text, ...props } = this.props
-        return React.createElement('h1', props, text)
-    }
-}
-
 function main(drivers) {
 
-    const props$ = drivers.props$
-
-    // consume event stream here somehow
-    const onUpdate$ = drivers.DOM
-        .events('onUpdate')
-        .map(event => ({ text: event.text }))
-        .delay(2000)
+    const click$ = drivers.DOM
 
     return {
-        DOM: Rx.Observable.concat(props$, onUpdate$)
-            .map(props => React.createElement(Test, props))
+        DOM: click$
+            .startWith(null)
+            .flatMapLatest(() =>
+                Rx.Observable.of('Hello React!')
+            ),
+
+        Log: click$
     }
 
 }
 
 const drivers = {
 
-    props$: () => Rx.Observable.of({
-        text: 'I want dataflow! Now',
-    }),
+    DOM: function(initialProps$) {
 
-    DOM: function(vtree$) {
+        const click$ = new Rx.Subject()
+        const onClick = (e) => click$.onNext(e)
 
-        // materialize the side effects
-
-        vtree$.subscribe((element) =>
-
+        initialProps$.subscribe(text => {
             ReactDOM.render(
-                element,
-                document.getElementById('app')
+                React.createElement('button', { onClick }, text),
+                document.querySelector('#app')
             )
+        })
 
-        )
+        return click$
 
-        // declare interface to attach event listeners
+    },
 
-        return {
-            events: function(type) {
-                return Rx.Observable.just({
-                    type,
-                    text: `I'm a simulated event!`
-                })
-            }
-        }
-
+    Log: function(click$) {
+        click$.subscribe(e => console.log(e))
     }
 }
 
