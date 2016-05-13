@@ -14,7 +14,7 @@ v5.9.0
 Then check out the repository and install.
 
 ```bash
-$ git clone git@github.com/jhohlfeld/rx-react.git
+$ git clone git@github.com:jhohlfeld/rx-react.git
 $ cd rx-react
 $ npm install
 ```
