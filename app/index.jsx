@@ -2,8 +2,19 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Cycle from '@cycle/core'
 
-function Test({ text, ...props }) {
-    return React.createElement('h1', props, text)
+class Test extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+
+    componentWillMount() {
+        console.log(`$(this.displayname) will mount!`)
+    }
+
+    render() {
+        const { text, ...props } = this.props
+        return React.createElement('h1', props, text)
+    }
 }
 
 function main(drivers) {
@@ -12,7 +23,7 @@ function main(drivers) {
 
     // consume event stream here somehow
     const onUpdate$ = drivers.DOM
-        .events('onClick')
+        .events('onUpdate')
         .map(event => ({ text: event.text }))
         .delay(2000)
 
