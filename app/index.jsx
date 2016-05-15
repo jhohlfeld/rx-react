@@ -4,13 +4,12 @@ import Cycle from '@cycle/core'
 
 function main(drivers) {
 
-    const click$ = drivers.DOM
+    const click$ = drivers.DOM.events('onClick')
 
     return {
-        DOM: click$
-            .startWith(null)
-            .flatMapLatest(() =>
-                Rx.Observable.of('Hello React!')
+        DOM: Rx.Observable.of('Hello React!')
+            .concat(click$
+                .map((e) => 'The button was clicked')
             ),
 
         Log: click$
@@ -20,19 +19,37 @@ function main(drivers) {
 
 const drivers = {
 
-    DOM: function(initialProps$) {
+    DOM: function(props$) {
 
-        const click$ = new Rx.Subject()
-        const onClick = (e) => click$.onNext(e)
+        const _events = {}
+        const _callbacks = {}
 
-        initialProps$.subscribe(text => {
+        const events = function(type) {
+            if (!_events[type]) {
+                const event$ = new Rx.Subject()
+                _events[type] = event$
+                _callbacks[type] = (e) => event$.onNext(e)
+            }
+            return _events[type]
+        }
+
+        const createCallback = function(type) {
+            if (!_callbacks[type]) {
+                events(type)
+            }
+            return _callbacks[type]
+        }
+
+        const onClick = createCallback('onClick')
+
+        props$.subscribe(text => {
             ReactDOM.render(
                 React.createElement('button', { onClick }, text),
                 document.querySelector('#app')
             )
         })
 
-        return click$
+        return { events }
 
     },
 
