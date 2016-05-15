@@ -17,9 +17,8 @@ function main(drivers) {
 
 }
 
-const drivers = {
-
-    DOM: function(props$) {
+function createDOMDriver(initDriver) {
+    return function(props$) {
 
         const _events = {}
         const _callbacks = {}
@@ -40,6 +39,16 @@ const drivers = {
             return _callbacks[type]
         }
 
+        initDriver(props$, createCallback)
+
+        return { events }
+
+    }
+}
+
+const drivers = {
+
+    DOM: createDOMDriver((props$, createCallback) => {
         const onClick = createCallback('onClick')
 
         props$.subscribe(text => {
@@ -48,10 +57,7 @@ const drivers = {
                 document.querySelector('#app')
             )
         })
-
-        return { events }
-
-    },
+    }),
 
     Log: function(click$) {
         click$.subscribe(e => console.log(e))
