@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Cycle from '@cycle/core'
 import { createDOMDriver } from './lib/driver';
+import App from './components/app'
 
 function main(drivers) {
 
@@ -25,7 +26,7 @@ const drivers = {
 
         props$.subscribe(text => {
             ReactDOM.render(
-                React.createElement('button', { onClick }, text),
+                React.createElement(App, { onClick, text }),
                 document.querySelector('#app')
             )
         })
