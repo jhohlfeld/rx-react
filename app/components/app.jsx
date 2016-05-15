@@ -1,17 +1,22 @@
 import React from 'react'
+import AddTodo from './add-todo'
+import ListTodos from './list-todos'
 
 class App extends React.Component {
 
     render() {
 
-        const { onClick, text } = this.props
+        const { addTodo, todos } = this.props
 
         return (
             <div>
-                <header><i>Simple react app</i></header>
+                <header>
+                    <h1>Sample TodoApp showing off React and RxJS</h1>
+                </header>
                 <main>
 
-                    <button { ...{onClick}}>{text}</button>
+                    <AddTodo addTodo={addTodo} />
+                    <ListTodos todos={todos} />
 
                 </main>
                 <footer>
