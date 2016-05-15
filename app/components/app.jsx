@@ -1,12 +1,14 @@
 import React from 'react'
 import AddTodo from './add-todo'
 import ListTodos from './list-todos'
+import {connect} from '../lib/driver'
 
+@connect('addTodo')
 class App extends React.Component {
 
     render() {
 
-        const { addTodo, todos } = this.props
+        const { todos, addTodo } = this.props
 
         return (
             <div>

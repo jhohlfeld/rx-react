@@ -1,5 +1,30 @@
-function createDOMDriver(initDriver) {
-    return function(props$) {
+import React, { createElement, Component, Children, PropTypes } from 'react'
+import ReactDOM from 'react-dom'
+
+function getDisplayName(WrappedComponent) {
+    return WrappedComponent.displayName || WrappedComponent.name || 'Component'
+}
+
+class RxConnect extends Component {
+
+    static childContextTypes = {
+        events: PropTypes.func
+    }
+
+    getChildContext() {
+        return {
+            events: this.props.events
+        }
+    }
+
+    render() {
+        return Children.only(this.props.children)
+    }
+
+}
+
+function createDOMDriver(domTarget, events) {
+    return function(vtree$) {
 
         const _events = {}
         const _callbacks = {}
@@ -13,20 +38,57 @@ function createDOMDriver(initDriver) {
             return _events[type]
         }
 
-        const createCallback = function(type) {
-            if (!_callbacks[type]) {
-                events(type)
+        const getCallback = function(type) {
+            if (!type) {
+                return _callbacks
             }
             return _callbacks[type]
         }
 
-        initDriver(props$, createCallback)
+        vtree$.subscribe(element => {
+            ReactDOM.render(
+                createElement(RxConnect, { events: getCallback }, element),
+                document.querySelector(domTarget)
+            )
+        })
 
         return { events }
+    }
 
+}
+
+function connect(intents = []) {
+
+    intents = Array.isArray(intents) || [intents]
+
+    return (WrappedComponent) => {
+
+        return class RxConnected extends Component {
+
+            static displayName = `RxConnected(${getDisplayName(WrappedComponent)})`
+
+            static contextTypes = {
+                events: React.PropTypes.func
+            }
+
+            render() {
+
+                const events = {}
+                intents.forEach(i => events[i] = this.context.events(i))
+
+                const mergedProps = {
+                    ...events,
+                    ...this.props
+                }
+
+                return createElement(WrappedComponent, mergedProps)
+            }
+
+        }
     }
 }
 
 export {
-    createDOMDriver
+    createDOMDriver,
+    connect
 }
