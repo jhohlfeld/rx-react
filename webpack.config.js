@@ -18,9 +18,6 @@ const common = {
         // Set up an ES6-ish environment
         'babel-polyfill',
 
-        // isomorphic-fetch
-        'isomorphic-fetch',
-
         // application scripts
         PATHS.app
     ],
