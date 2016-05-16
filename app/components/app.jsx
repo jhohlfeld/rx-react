@@ -13,7 +13,7 @@ class App extends React.Component {
         return (
             <div>
                 <header>
-                    <h1>Sample TodoApp showing off React and RxJS</h1>
+                    <h1>Todo-app with Cycle.js and React.js</h1>
                 </header>
                 <main>
 

@@ -9,7 +9,7 @@
   "author": "Jakob Hohlfeld <jhohlfeld@polyban.io>",
   "license": "ISC",
   "keywords": [],
-  "description": "",
+  "description": "Todo-app with Cycle.js and React.js",
   "dependencies": {
     "@cycle/core": "^6.0.3",
     "dotenv": "^2.0.0",
