@@ -1,14 +1,12 @@
 import React from 'react'
 import Todo from './todo'
 
-export default function ListTodos(props) {
-
-    const { todos } = props
+export default function ListTodos({removeTodo, todos, ...props}) {
 
     return (
         <ul>
             {todos.map(todo => (
-                <li key={todo.id}>{todo.title}</li>
+                <li key={todo.id}><Todo removeTodo={removeTodo} todo={todo} /></li>
             ))}
         </ul>
     )

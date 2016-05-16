@@ -2,38 +2,38 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Cycle from '@cycle/core'
 import { createDOMDriver } from './lib/driver';
-import uuid from 'uuid'
 import App from './components/app'
 
-const todos = []
+const initialState = { todos: [] }
 
 function intent({ DOM }) {
     return {
-        addTodo: DOM.events('addTodo')
-            .map(e => {
-                e.preventDefault()
-                const title = e.target.title.value
-                e.target.title.value = ''
-                e.target.title.focus()
-                return {
-                    id: uuid.v4(),
-                    title
-                }
-            })
-            .filter(todo => todo.title !== '')
+        addTodo: DOM.events('addTodo').filter(todo => todo.title !== ''),
+        removeTodo: DOM.events('removeTodo')
     }
 }
 
+const operations = {
+    addTodo: newTodo => state => ({
+        todos: state.todos.concat(newTodo)
+    }),
+    removeTodo: idToRemove => state => ({
+        todos: state.todos.filter(todo => todo.id !== idToRemove)
+    })
+}
+
 function model(intents) {
-    return intents.addTodo
-        .scan((state, todo) => ({
-            todos: state.todos.concat(todo)
-        }), { todos })
+    const allOperations$ = Rx.Observable.merge(
+        Object.keys(intents).map(intent =>
+            intents[intent].map(item => operations[intent](item))))
+
+    return allOperations$
+        .scan((state, operation) => operation(state), initialState)
 }
 
 function view(state$) {
     return state$
-        .startWith({ todos })
+        .startWith(initialState)
         .map(state => React.createElement(App, { todos: state.todos }))
 }
 

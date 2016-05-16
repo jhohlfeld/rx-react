@@ -57,9 +57,7 @@ function createDOMDriver(domTarget, events) {
 
 }
 
-function connect(intents = []) {
-
-    intents = Array.isArray(intents) || [intents]
+function connect(...intents) {
 
     return (WrappedComponent) => {
 
