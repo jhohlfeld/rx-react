@@ -23,7 +23,7 @@ class RxConnect extends Component {
 
 }
 
-function createDOMDriver(domTarget, events) {
+function createReactDriver(domTarget, events) {
     return function(vtree$) {
 
         const _events = {}
@@ -87,6 +87,6 @@ function connect(...intents) {
 }
 
 export {
-    createDOMDriver,
+    createReactDriver,
     connect
 }

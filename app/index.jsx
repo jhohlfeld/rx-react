@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Cycle from '@cycle/core'
-import { createDOMDriver } from './lib/driver';
+import { createReactDriver } from './lib/driver-react';
 import App from './components/app'
 
 const initialState = { todos: [] }
@@ -44,5 +44,5 @@ function main({ DOM }) {
 }
 
 Cycle.run(main, {
-    DOM: createDOMDriver('#app')
+    DOM: createReactDriver('#app')
 })

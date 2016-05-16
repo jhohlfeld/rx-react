@@ -1,7 +1,7 @@
 import React from 'react'
 import AddTodo from './add-todo'
 import ListTodos from './list-todos'
-import {connect} from '../lib/driver'
+import { connect } from '../lib/driver-react'
 
 @connect('addTodo', 'removeTodo')
 class App extends React.Component {
