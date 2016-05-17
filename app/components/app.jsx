@@ -3,12 +3,13 @@ import AddTodo from './add-todo'
 import ListTodos from './list-todos'
 import { connect } from '../lib/driver-react'
 
-@connect('addTodo', 'removeTodo')
+@connect('addTodo', 'updateTodo', 'removeTodo')
 class App extends React.Component {
 
-    render() {
+    render() {
 
-        const { todos, addTodo, removeTodo } = this.props
+        const { todos, events } = this.props
+        const { addTodo, updateTodo, removeTodo } = events
 
         return (
             <div>
@@ -18,7 +19,7 @@ class App extends React.Component {
                 <main>
 
                     <AddTodo addTodo={addTodo} />
-                    <ListTodos {...{todos, removeTodo}} />
+                    <ListTodos {...{todos, updateTodo, removeTodo}} />
 
                 </main>
                 <footer>

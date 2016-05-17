@@ -66,7 +66,7 @@ function connect(...intents) {
             static displayName = `RxConnected(${getDisplayName(WrappedComponent)})`
 
             static contextTypes = {
-                events: React.PropTypes.func
+                events: PropTypes.func
             }
 
             render() {
@@ -75,7 +75,7 @@ function connect(...intents) {
                 intents.forEach(i => events[i] = this.context.events(i))
 
                 const mergedProps = {
-                    ...events,
+                    events,
                     ...this.props
                 }
 

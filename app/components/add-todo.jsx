@@ -1,7 +1,7 @@
 import React from 'react'
 import uuid from 'uuid'
 
-export default function AddTodo({addTodo}) {
+export default function AddTodo({ addTodo }) {
     const onAdd = (e) => {
         e.preventDefault()
         const title = e.target.title.value
