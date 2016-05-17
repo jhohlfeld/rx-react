@@ -12,10 +12,13 @@
   "description": "Todo-app with Cycle.js and React.js",
   "dependencies": {
     "@cycle/core": "^6.0.3",
+    "@cycloidal/driver-router": "git+https://github.com/cycloidal/driver-router.git",
     "dotenv": "^2.0.0",
+    "history": "^2.1.1",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "rx": "^4.1.0",
+    "uniloc": "^0.3.0",
     "uuid": "^2.0.2"
   },
   "devDependencies": {
@@ -33,5 +36,13 @@
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
     "webpack-merge": "^0.12.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhohlfeld/rx-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jhohlfeld/rx-react/issues"
+  },
+  "homepage": "https://github.com/jhohlfeld/rx-react#readme"
 }
